@@ -39,7 +39,7 @@ class CrudRepository{
         return response;
     }
 
-    async update(id,data){//data is an object containing col,val
+    async update(data,id){//data is an object containing col,val
         const response=await this.model.update(data,{
             where:{
                 id:id
