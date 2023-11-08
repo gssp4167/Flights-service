@@ -60,7 +60,7 @@ async function updateCity(data,id){
     try {
         const city=cityRepository.get(id);
         if(city){
-            const response=await CityRepository.update(data,id);
+            const response=await cityRepository.update(data,id);
             return response;
         }
     } catch (error) {
