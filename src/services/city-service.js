@@ -20,9 +20,60 @@ async function createCity(data){
     }
 }
 
+async function getCities(){
+    try{
+        const cities=await cityRepository.getAll();
+        return cities;
+    }
+    catch(error){
+        throw new AppError('Cannot fetch data of all cities',StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
+async function getCity(id){
+    try{
+        const city=await cityRepository.get(id);
+        return city;
+    }
+    catch(error){
+        if(error.statusCode==StatusCodes.NOT_FOUND){
+            throw new AppError('The city you requested is not present',StatusCodes.NOT_FOUND);
+        }
+        throw new AppError('Cannot fetch data of all the cities',StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
+async function destroyCity(id){
+    try{
+        const response=await cityRepository.destroy(id);
+        return response;
+    }
+    catch(error){
+        if(error.statusCode==StatusCodes.NOT_FOUND){
+            throw new AppError('The city you requested to delete is not present',StatusCodes.NOT_FOUND);
+        }
+        throw new AppError('Cannot fetch data of all the cities',StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
+async function updateCity(data,id){
+    try {
+        const city=cityRepository.get(id);
+        if(city){
+            const response=await CityRepository.update(data,id);
+            return response;
+        }
+    } catch (error) {
+        throw new AppError('The city you requested to update is not present',StatusCodes.BAD_REQUEST);
+    }
+}
 
 
 module.exports={
-    createCity
+    createCity,
+    getCities,
+    getCity,
+    destroyCity,
+    updateCity
 }
 
